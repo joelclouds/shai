@@ -116,8 +116,10 @@ uninstall:
 	@if [ -f "$(ALIAS_FILE)" ]; then \
 	  NAME=$$(cat $(ALIAS_FILE)); \
 	  sed -i "/# shai - Self-Hosted AI/d" ~/.bashrc; \
+	  sed -i "/export OLLAMA_API_BASE=/d" ~/.bashrc; \
 	  sed -i "/alias $$NAME=/d" ~/.bashrc; \
-	  echo "✓ Removed alias"; \
+	  rm -f $(ALIAS_FILE); \
+	  echo "✓ Removed alias, environment variables, and config blocks"; \
 	fi
 	@echo "✓ shai uninstalled. Ollama untouched."
 
