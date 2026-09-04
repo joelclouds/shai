@@ -49,7 +49,7 @@ install-model:
 	echo "  2) qwen2.5-coder:7b       ~5GB RAM   Fast, good for GPUs/32GB+ RAM"; \
 	echo "  3) qwen2.5-coder:14b      ~12GB RAM  Better reasoning"; \
 	echo "  4) qwen2.5-coder:32b      ~24GB RAM  Best quality, heavy GPU required"; \
-	echo "  5) phi4-mini:3.8b         ~2.3GB RAM Great lightweight alternative"; \
+	echo "  5) phi4-mini              ~2.5GB RAM Great lightweight alternative"; \
 	echo ""; \
 	echo " ★ Recommended for your hardware: $$RECOMMENDED"; \
 	echo ""; \
@@ -59,7 +59,7 @@ install-model:
 	  1) MODEL="ollama_chat/qwen2.5-coder:1.5b";; \
 	  3) MODEL="ollama_chat/qwen2.5-coder:14b";; \
 	  4) MODEL="ollama_chat/qwen2.5-coder:32b";; \
-	  5) MODEL="ollama_chat/phi4-mini:3.8b";; \
+	  5) MODEL="ollama_chat/phi4-mini";; \
 	  *) MODEL="ollama_chat/qwen2.5-coder:7b";; \
 	esac; \
 	echo ""; \
