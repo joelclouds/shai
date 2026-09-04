@@ -23,10 +23,10 @@ install-ollama:
 	echo "✓ Ollama installed and running"
 
 install-model:
-	@echo ""; \
-	echo "── Hardware Detection ──"; \
-	echo ""; \
-	bash -c '\
+	@echo ""
+	@echo "── Hardware Detection ──"
+	@echo ""
+	@bash -c '\
 	GPU_NAME="none"; \
 	GPU_MEM=0; \
 	RAM_GB=$$(free -g | awk "/^Mem:/{print \$$2}"); \
@@ -34,42 +34,32 @@ install-model:
 	  GPU_NAME=$$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1); \
 	  GPU_MEM=$$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null | head -1); \
 	fi; \
-	echo "  RAM:  $${RAM_GB}GB"; \
+	echo " RAM: $${RAM_GB}GB"; \
 	if [ "$$GPU_NAME" != "none" ]; then \
-	  echo "  GPU:  $$GPU_NAME ($${GPU_MEM}MB VRAM)"; \
+	  echo " GPU: $$GPU_NAME ($${GPU_MEM}MB VRAM)"; \
+	  RECOMMENDED=2; \
 	else \
-	  echo "  GPU:  none detected (CPU inference)"; \
+	  echo " GPU: none detected (CPU inference - using lightweight model)"; \
+	  RECOMMENDED=1; \
 	fi; \
 	echo ""; \
-	RECOMMENDED=1; \
-	if [ "$$GPU_MEM" -ge 24000 ] 2>/dev/null; then \
-	  RECOMMENDED=3; \
-	elif [ "$$GPU_MEM" -ge 12000 ] 2>/dev/null; then \
-	  RECOMMENDED=2; \
-	elif [ "$$GPU_MEM" -ge 8000 ] 2>/dev/null; then \
-	  RECOMMENDED=1; \
-	elif [ "$$RAM_GB" -ge 32 ] 2>/dev/null; then \
-	  RECOMMENDED=2; \
-	else \
-	  RECOMMENDED=1; \
-	fi; \
 	echo "── Model Selection ──"; \
 	echo ""; \
-	echo "  1) qwen2.5-coder:7b       ~5GB RAM   Fast, good for most tasks"; \
-	echo "  2) qwen2.5-coder:14b      ~12GB RAM  Better reasoning"; \
-	echo "  3) qwen2.5-coder:32b      ~24GB RAM  Best quality, needs GPU/32GB+"; \
-	echo "  4) deepseek-coder-v2:16b  ~12GB RAM  Strong alternative"; \
-	echo "  5) codellama:13b          ~10GB RAM  Well-tested"; \
+	echo "  1) qwen2.5-coder:1.5b     ~1GB RAM   ⚡ Blazing fast (Best for CPU-only)"; \
+	echo "  2) qwen2.5-coder:7b       ~5GB RAM   Fast, good for GPUs/32GB+ RAM"; \
+	echo "  3) qwen2.5-coder:14b      ~12GB RAM  Better reasoning"; \
+	echo "  4) qwen2.5-coder:32b      ~24GB RAM  Best quality, heavy GPU required"; \
+	echo "  5) phi4-mini:3.8b         ~2.3GB RAM Great lightweight alternative"; \
 	echo ""; \
-	echo "  ★ Recommended for your hardware: $$RECOMMENDED"; \
+	echo " ★ Recommended for your hardware: $$RECOMMENDED"; \
 	echo ""; \
 	read -p "Pick model [$$RECOMMENDED]: " choice; \
 	choice=$${choice:-$$RECOMMENDED}; \
 	case "$$choice" in \
-	  2) MODEL="ollama_chat/qwen2.5-coder:14b";; \
-	  3) MODEL="ollama_chat/qwen2.5-coder:32b";; \
-	  4) MODEL="ollama_chat/deepseek-coder-v2:16b";; \
-	  5) MODEL="ollama_chat/codellama:13b";; \
+	  1) MODEL="ollama_chat/qwen2.5-coder:1.5b";; \
+	  3) MODEL="ollama_chat/qwen2.5-coder:14b";; \
+	  4) MODEL="ollama_chat/qwen2.5-coder:32b";; \
+	  5) MODEL="ollama_chat/phi4-mini:3.8b";; \
 	  *) MODEL="ollama_chat/qwen2.5-coder:7b";; \
 	esac; \
 	echo ""; \
