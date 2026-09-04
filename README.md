@@ -4,7 +4,7 @@
 
 ## Install
 
-    git clone <repo-url> shai
+    git clone https://github.com/joelclouds/shai.git
     cd shai
     make install
 
