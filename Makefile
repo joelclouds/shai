@@ -66,11 +66,11 @@ install-model:
 	read -p "Pick model [$$RECOMMENDED]: " choice; \
 	choice=$${choice:-$$RECOMMENDED}; \
 	case "$$choice" in \
-	  2) MODEL="qwen2.5-coder:14b";; \
-	  3) MODEL="qwen2.5-coder:32b";; \
-	  4) MODEL="deepseek-coder-v2:16b";; \
-	  5) MODEL="codellama:13b";; \
-	  *) MODEL="qwen2.5-coder:7b";; \
+	  2) MODEL="ollama_chat/qwen2.5-coder:14b";; \
+	  3) MODEL="ollama_chat/qwen2.5-coder:32b";; \
+	  4) MODEL="ollama_chat/deepseek-coder-v2:16b";; \
+	  5) MODEL="ollama_chat/codellama:13b";; \
+	  *) MODEL="ollama_chat/qwen2.5-coder:7b";; \
 	esac; \
 	echo ""; \
 	echo "Pulling $$MODEL ..."; \
