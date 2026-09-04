@@ -56,15 +56,16 @@ install-model:
 	read -p "Pick model [$$RECOMMENDED]: " choice; \
 	choice=$${choice:-$$RECOMMENDED}; \
 	case "$$choice" in \
-	  2) MODEL="ollama_chat/qwen2.5-coder:7b";; \
-	  3) MODEL="ollama_chat/qwen2.5-coder:14b";; \
-	  4) MODEL="ollama_chat/qwen2.5-coder:32b";; \
-	  5) MODEL="ollama_chat/phi4-mini";; \
-	  *) MODEL="ollama_chat/qwen2.5-coder:1.5b";; \
+	  1) RAW_MODEL="qwen2.5-coder:1.5b";; \
+	  3) RAW_MODEL="qwen2.5-coder:14b";; \
+	  4) RAW_MODEL="qwen2.5-coder:32b";; \
+	  5) RAW_MODEL="phi4-mini";; \
+	  *) RAW_MODEL="qwen2.5-coder:7b";; \
 	esac; \
+	MODEL="ollama_chat/$$RAW_MODEL"; \
 	echo ""; \
-	echo "Pulling $$MODEL ..."; \
-	ollama pull $$MODEL; \
+	echo "Pulling $$RAW_MODEL ..."; \
+	ollama pull $$RAW_MODEL; \
 	mkdir -p $(VENV); \
 	echo "$$MODEL" > $(MODEL_FILE); \
 	echo "✓ Model $$MODEL ready"'
@@ -115,11 +116,9 @@ uninstall:
 	@rm -rf $(VENV)
 	@if [ -f "$(ALIAS_FILE)" ]; then \
 	  NAME=$$(cat $(ALIAS_FILE)); \
-	  sed -i "/# shai - Self-Hosted AI/d" ~/.bashrc; \
-	  sed -i "/export OLLAMA_API_BASE=/d" ~/.bashrc; \
-	  sed -i "/alias $$NAME=/d" ~/.bashrc; \
+	  sed -i '/# shai - Self-Hosted AI/,/alias '"$$NAME"'=/d' ~/.bashrc; \
 	  rm -f $(ALIAS_FILE); \
-	  echo "✓ Removed alias, environment variables, and config blocks"; \
+	  echo "✓ Removed shai block, environment variables, and alias from ~/.bashrc"; \
 	fi
 	@echo "✓ shai uninstalled. Ollama untouched."
 
