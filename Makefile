@@ -89,24 +89,26 @@ install-aider:
 
 install-alias:
 	@echo ""
-	@echo "── Alias Setup ──"
-	@MODEL=$$(cat $(MODEL_FILE) 2>/dev/null || echo "qwen2.5-coder:7b"); \
+	@echo "── Alias & Environment Setup ──"
+	@MODEL=$$(cat $(MODEL_FILE) 2>/dev/null || echo "ollama_chat/qwen2.5-coder:7b"); \
 	SHAI_BIN="$(SHAI_DIR)/venv/bin/aider"; \
 	export MODEL SHAI_BIN; \
 	bash -c '\
 	read -p "Alias name [shai]: " name; \
 	name=$${name:-shai}; \
 	ALIAS_LINE="alias $$name=\"$$SHAI_BIN --model $$MODEL\""; \
+	EXPORT_LINE="export OLLAMA_API_BASE=http://127.0.0.1:11434"; \
 	if grep -q "alias $$name=" ~/.bashrc 2>/dev/null; then \
 	  sed -i "s|alias $$name=.*|$$ALIAS_LINE|" ~/.bashrc; \
 	  echo "Updated existing alias"; \
 	else \
 	  echo "" >> ~/.bashrc; \
 	  echo "# shai - Self-Hosted AI" >> ~/.bashrc; \
+	  echo "$$EXPORT_LINE" >> ~/.bashrc; \
 	  echo "$$ALIAS_LINE" >> ~/.bashrc; \
 	fi; \
 	echo "$$name" > $(ALIAS_FILE); \
-	echo "✓ Alias $$name added to ~/.bashrc. Run source ~/.bashrc to activate."'
+	echo "✓ Configuration complete. Run source ~/.bashrc to activate."'
 
 run: check
 	@MODEL=$$(cat $(MODEL_FILE) 2>/dev/null || echo "qwen2.5-coder:7b"); \
